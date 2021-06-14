@@ -1,3 +1,13 @@
+.loginForm{
+    display: flex;
+    justify-content: center;
+    margin-top: 2%;
+}
+
+.login-card{
+    width:400px;
+    padding:30px;
+}
 
 .dispNone {
     display: none;
@@ -9,4 +19,8 @@
 
 .red {
     color: red;
+}
+
+.form-control {
+    width:100%;
 }

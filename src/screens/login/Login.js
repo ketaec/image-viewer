@@ -17,35 +17,41 @@ class Login extends Component {
             usernameRequired: "dispNone",
             username: "",
             loginPasswordRequired: "dispNone",
-            loginPassword: ""
+            loginPassword: "",
+            loginFailed: false
         }
     }
 
     inputUsernameChangeHandler = (e) => {
-        
         this.setState({ username: e.target.value });
-        console.log("username ", this.state.username);
     }
 
     inputLoginPasswordChangeHandler = (e) => {
         this.setState({ loginPassword: e.target.value });
-        console.log("password ", this.state.loginPassword);
     }
 
     loginClickHandler = () => {
         this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
         this.state.loginPassword === "" ? this.setState({ loginPasswordRequired: "dispBlock" }) : this.setState({ loginPasswordRequired: "dispNone" });
-        console.log("state ", this.state);
+
+        if( this.state.username !== "" && this.state.loginPassword !== "" ) {
+            if(this.state.username !== "upgrad" || this.state.loginPassword !== "upgrad" ) {
+                this.setState({loginFailed: true});
+            } else {
+                this.setState({loginFailed: false});
+            }
+        }
+        
     }
 
     render() {
         return (
             <div className="loginForm">
-                <Card>
+                <Card className="login-card">
                     <CardContent>
                         <Typography variant="h5">LOGIN</Typography>
                         <br />
-                        <FormControl required>
+                        <FormControl required className="form-control">
                             <InputLabel htmlFor="username">Username</InputLabel>
                             <Input id="username" type="text" username={this.state.username} onChange={this.inputUsernameChangeHandler} />
                             <FormHelperText className={this.state.usernameRequired}>
@@ -53,13 +59,21 @@ class Login extends Component {
                             </FormHelperText>
                         </FormControl>
                         <br /><br />
-                        <FormControl required>
+                        <FormControl required className="form-control">
                             <InputLabel htmlFor="loginPassword">Password</InputLabel>
                             <Input id="loginPassword" type="password" loginpassword={this.state.loginPassword} onChange={this.inputLoginPasswordChangeHandler} />
                             <FormHelperText className={this.state.loginPasswordRequired}>
                                 <span className="red">required</span>
                             </FormHelperText>
                         </FormControl>
+                        <br /><br />
+                        {this.state.loginFailed === true &&
+                                <FormControl>
+                                    <span className="red">
+                                        Incorrect username and/or password
+                                    </span>
+                                </FormControl>
+                        }
                         <br /><br />
                         <Button variant="contained" color="primary" onClick={this.loginClickHandler}>LOGIN</Button>
                     </CardContent>
