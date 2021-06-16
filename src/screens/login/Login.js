@@ -9,6 +9,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import './Login.css';
+import Header from '../../common/header/Header';
 
 class Login extends Component { 
     constructor() {
@@ -39,6 +40,7 @@ class Login extends Component {
                 this.setState({loginFailed: true});
             } else {
                 this.setState({loginFailed: false});
+                this.props.history.push("/home");
             }
         }
         
@@ -46,39 +48,44 @@ class Login extends Component {
 
     render() {
         return (
-            <div className="loginForm">
-                <Card className="login-card">
-                    <CardContent>
-                        <Typography variant="h5">LOGIN</Typography>
-                        <br />
-                        <FormControl required className="form-control">
-                            <InputLabel htmlFor="username">Username</InputLabel>
-                            <Input id="username" type="text" username={this.state.username} onChange={this.inputUsernameChangeHandler} />
-                            <FormHelperText className={this.state.usernameRequired}>
-                                <span className="red">required</span>
-                            </FormHelperText>
-                        </FormControl>
-                        <br /><br />
-                        <FormControl required className="form-control">
-                            <InputLabel htmlFor="loginPassword">Password</InputLabel>
-                            <Input id="loginPassword" type="password" loginpassword={this.state.loginPassword} onChange={this.inputLoginPasswordChangeHandler} />
-                            <FormHelperText className={this.state.loginPasswordRequired}>
-                                <span className="red">required</span>
-                            </FormHelperText>
-                        </FormControl>
-                        <br /><br />
-                        {this.state.loginFailed === true &&
-                                <FormControl>
-                                    <span className="red">
-                                        Incorrect username and/or password
-                                    </span>
-                                </FormControl>
-                        }
-                        <br /><br />
-                        <Button variant="contained" color="primary" onClick={this.loginClickHandler}>LOGIN</Button>
-                    </CardContent>
-                </Card>
+            <div>
+                <Header />
+                <div className="loginForm">
+                    <Card className="login-card">
+                        <CardContent>
+                            <Typography variant="h5">LOGIN</Typography>
+                            <br />
+                            <FormControl required className="form-control">
+                                <InputLabel htmlFor="username">Username</InputLabel>
+                                <Input id="username" type="text" username={this.state.username} onChange={this.inputUsernameChangeHandler} />
+                                <FormHelperText className={this.state.usernameRequired}>
+                                    <span className="red">required</span>
+                                </FormHelperText>
+                            </FormControl>
+                            <br /><br />
+                            <FormControl required className="form-control">
+                                <InputLabel htmlFor="loginPassword">Password</InputLabel>
+                                <Input id="loginPassword" type="password" loginpassword={this.state.loginPassword} onChange={this.inputLoginPasswordChangeHandler} />
+                                <FormHelperText className={this.state.loginPasswordRequired}>
+                                    <span className="red">required</span>
+                                </FormHelperText>
+                            </FormControl>
+                            <br /><br />
+                            {this.state.loginFailed === true &&
+                                    <FormControl>
+                                        <span className="red">
+                                            Incorrect username and/or password
+                                        </span>
+                                    </FormControl>
+                            }
+                            <br /><br />
+                            <Button variant="contained" color="primary" onClick={this.loginClickHandler}>LOGIN</Button>
+                        </CardContent>
+                    </Card>
+                </div>
+
             </div>
+
         );
     }
 }
