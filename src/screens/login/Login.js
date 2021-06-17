@@ -32,14 +32,19 @@ class Login extends Component {
     }
 
     loginClickHandler = () => {
+        let username = "upgrad";
+        let password = "upgrad";
+        let access_token = "set access token";
+
         this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
         this.state.loginPassword === "" ? this.setState({ loginPasswordRequired: "dispBlock" }) : this.setState({ loginPasswordRequired: "dispNone" });
 
         if( this.state.username !== "" && this.state.loginPassword !== "" ) {
-            if(this.state.username !== "upgrad" || this.state.loginPassword !== "upgrad" ) {
+            if(this.state.username !== username || this.state.loginPassword !== password ) {
                 this.setState({loginFailed: true});
             } else {
                 this.setState({loginFailed: false});
+                sessionStorage.setItem("access-token", access_token);
                 this.props.history.push("/home");
             }
         }
@@ -49,7 +54,7 @@ class Login extends Component {
     render() {
         return (
             <div>
-                <Header />
+                <Header {...this.props} />
                 <div className="loginForm">
                     <Card className="login-card">
                         <CardContent>
