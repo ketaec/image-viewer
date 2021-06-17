@@ -1,12 +1,25 @@
 .app-header{
     background:#263238;
     color:#fff;
-    height: 50px;
+    height: 60px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
 .app-title {
     font-size: 18px;
     padding-left: 10px;
+}
+
+.search-box {
+    border-radius: 4px; 
+    width: 300px; 
+    background: #c0c0c0; 
+    height: 40px;
+    margin: 25px 0px 0px 0px; 
+} 
+
+.app-searchbar-icon {
+    float: right;
 }
