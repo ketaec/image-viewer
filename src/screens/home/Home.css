@@ -1,0 +1,38 @@
+.posts-container {
+    margin: 1% 10% 1% 10%;
+}
+
+.avatar{
+    border: 2px solid whitesmoke;
+}
+
+.caption {
+    overflow: hidden;
+    text-overflow: clip;
+    margin-top: 5px;
+}
+
+.tags {
+    color: rgb(3 121 239);
+}
+
+.likes {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 25px;
+}
+
+.post-comment-container {
+    display: flex;
+}
+
+.post-comment-form-control {
+    width: 80%;
+}
+
+.add-button {
+    cursor: pointer;
+    margin-top: 10px !important;
+    margin-left: 10px !important;
+}
