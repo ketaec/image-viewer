@@ -6,13 +6,12 @@ import profile_pic from "../../assets/images/profile_pic.png";
 class ProfilePic extends Component {
     constructor(props) {
         super();
-        console.log(props);
         this.state = {
             menuState: false,
             anchorEl: null
         };
     }
-    
+
     onProfileIconClick = (e) => {
         this.setState({menuState: !this.state.menuState,anchorEl: e.currentTarget });
     };

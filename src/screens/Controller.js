@@ -8,7 +8,7 @@ class Controller extends Component {
 
     constructor() {
       super();
-      this.baseUrl = "";
+      this.baseUrl = "https://graph.instagram.com/";
     }
     render() {
         return (

@@ -11,7 +11,6 @@ class Header extends Component {
 
     onSearch = async (e) => {
         console.log(e.target.value);
-        console.log(this.props);
     }
 
     render() {
