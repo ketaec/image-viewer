@@ -23,10 +23,9 @@ class Home extends Component {
         super();
         this.state = {
             searchText: "",
-            userImages: [],
+            userPosts: [],
             filteredImages: [],
             username: '', 
-            // url: properties.dpUrl, 
             loggedIn: sessionStorage.getItem("access-token") == null ? false : true
         }
     }
@@ -38,7 +37,6 @@ class Home extends Component {
         let response = await fetch(getUserImages);
         let posts = await response.json();
         posts = posts.data;
-        console.log(posts);
 
         for (let i = 0; i < posts.length; i++) {
             response = await fetch(getPostDetails.replace('$postId', posts[i].id));
@@ -53,7 +51,6 @@ class Home extends Component {
 
             let captionAndTags = posts[i].caption.split("\n");
             for(let captionAndTag of captionAndTags) {
-                console.log(captionAndTag);
                 if(captionAndTag.charAt(0) === "#") {
                     posts[i].tags = captionAndTag; 
                 } else {
@@ -62,16 +59,16 @@ class Home extends Component {
             }
             this.setState({ username: details.username });
         }
-        this.setState({ userImages: posts });
+        this.setState({ userPosts: posts });
         this.setState({ filteredImages: posts.filter(x => true) }); 
 
     }
 
     likeHandler = (details) => {
         let index = details.index;
-        let likedImages = this.state.userImages;
+        let likedImages = this.state.userPosts;
         likedImages[index].isLiked = !likedImages[index].isLiked;
-        this.setState({'userImages': likedImages})
+        this.setState({'userPosts': likedImages})
     }
 
     commentHandler = (details, pos) => {
@@ -80,7 +77,7 @@ class Home extends Component {
         if (textField.value == null || textField.value.trim() === "") {
             return;
         }
-        let userImagesTemp = this.state.userImages;
+        let userImagesTemp = this.state.userPosts;
         if (userImagesTemp[index].comments === undefined) {
             userImagesTemp[index].comments = [textField.value];
         } else {
@@ -89,24 +86,30 @@ class Home extends Component {
 
         textField.value = "";
 
-        this.setState({'userImages': userImagesTemp})
+        this.setState({'userPosts': userImagesTemp})
     }
 
     searchHandler = (e) => {
         if (this.state.searchText == null || this.state.searchText.trim() === "") {
-            this.setState({filteredImages: this.state.userImages});
+            this.setState({filteredImages: this.state.userPosts});
         } else {
-            let filteredForSearch = this.state.userImages.filter((element) => {
-                return element.caption !== undefined && (element.caption.toUpperCase().split("\n")[0].indexOf(e.target.value.toUpperCase())) > -1
+            let filteredForSearch = this.state.userPosts.filter((element) => {
+                return element.caption !== undefined && (element.caption.toLowerCase().split("\n")[0].indexOf(e.target.value.toLowerCase())) > -1
             });
             this.setState({filteredImages: filteredForSearch});
         }
     }
 
+    handleChange = (e) => {
+        this.setState({'searchText': e.target.value}, () => {
+            this.searchHandler(e);
+        });
+    };
+
     render() {
         return (
             <div>
-                <Header {...this.props} history={this.props.history} showSearchbar="true" />
+                <Header {...this.props} history={this.props.history} showSearchbar="true" handleChange={this.handleChange} />
                 <Container className='posts-container'>
                     <Grid container alignContent='center' justify='flex-start' direction='row' spacing={2}>
                         {

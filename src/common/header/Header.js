@@ -10,7 +10,7 @@ class Header extends Component {
     }
 
     onSearch = async (e) => {
-        console.log(e.target.value);
+        this.props.handleChange(e);
     }
 
     render() {
