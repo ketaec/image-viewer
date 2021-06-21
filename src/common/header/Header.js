@@ -38,6 +38,14 @@ class Header extends Component {
                         : null
                     } 
 
+                    {
+                        this.props.showProfilePic ? 
+                        <div>
+                            <ProfilePic {...this.props} />
+                        </div>
+                        : null
+                    }
+
                 </div>
 
             </div>
