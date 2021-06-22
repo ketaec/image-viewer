@@ -1,0 +1,39 @@
+.profile-information {
+    margin: 2% 20%;
+}
+
+.avatar{
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.edit-button {
+    height: 62px;
+    color: white !important;
+    background: #f50057;
+    border-radius: 50px !important;
+    margin-left: 20px !important;
+}
+
+.modal-div {
+    margin: 15% 40%;
+    background: white;
+    padding: 15px;
+    border-radius: 3px;
+}
+
+.dispNone {
+    display: none;
+}
+
+.dispBlock {
+    display: block;
+}
+
+.red {
+    color: red;
+}
+
+.form-control {
+    width:100%;
+}

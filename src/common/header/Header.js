@@ -40,7 +40,7 @@ class Header extends Component {
 
                     {
                         this.props.showProfilePic ? 
-                        <div>
+                        <div style={{"marginTop": 15}}>
                             <ProfilePic {...this.props} />
                         </div>
                         : null
