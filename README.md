@@ -1,3 +1,11 @@
+# Image viewer app configuration
+
+username: upgrad
+password: upgrad
+
+set access-token in session storage or set access-token in login page before opening home page or profile page. 
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

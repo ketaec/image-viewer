@@ -11,6 +11,8 @@ class Controller extends Component {
       super();
       this.baseUrl = "https://graph.instagram.com/";
     }
+
+    // controller renderer function with routes configuration
     render() {
         return (
             <Router>
