@@ -31,6 +31,7 @@ class Home extends Component {
         }
     }
 
+    // onload component function
     async componentDidMount() {
         let getUserImages = this.props.baseUrl + "me/media?fields=id,caption&access_token=" + sessionStorage.getItem("access-token");
         let getPostDetails = this.props.baseUrl + "$postId?fields=id,media_type,media_url,username,timestamp&access_token=" + sessionStorage.getItem("access-token");
@@ -65,6 +66,7 @@ class Home extends Component {
 
     }
 
+    // likes handler function
     likeHandler = (details) => {
         let index = details.index;
         let likedImages = this.state.userPosts;
@@ -72,6 +74,7 @@ class Home extends Component {
         this.setState({'userPosts': likedImages})
     }
 
+    // comment handler function
     commentHandler = (details, pos) => {
         let index = details.index;
         var textField = document.getElementById("textfield-" + pos);
@@ -90,6 +93,7 @@ class Home extends Component {
         this.setState({'userPosts': userImagesTemp})
     }
 
+    // search handler function
     searchHandler = (e) => {
         if (this.state.searchText == null || this.state.searchText.trim() === "") {
             this.setState({filteredImages: this.state.userPosts});
@@ -101,12 +105,14 @@ class Home extends Component {
         }
     }
 
+    // search handle function
     handleChange = (e) => {
         this.setState({'searchText': e.target.value}, () => {
             this.searchHandler(e);
         });
     };
 
+    // renderer function
     render() {
         if (sessionStorage.getItem("access-token") == null) return <Redirect to="/" />
         else

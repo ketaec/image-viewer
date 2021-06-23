@@ -6,10 +6,12 @@ import ProfilePic from "../profilePic/ProfilePic";
 
 class Header extends Component {
 
+    // onsearch handler
     onSearch = async (e) => {
         this.props.handleChange(e);
     }
 
+    //header renderer function
     render() {
         return (
             <div className="app-header">

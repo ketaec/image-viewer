@@ -27,7 +27,6 @@ class Profile extends Component {
         super();
         this.state = {
             userPosts: [],
-            // filteredImages: [],
             username: '', 
             loggedIn: sessionStorage.getItem("access-token") == null ? false : true,
             followed_by: 6,
@@ -44,6 +43,7 @@ class Profile extends Component {
         }
     }
 
+    // component onload function
     async componentDidMount() {
         let getUserPosts = this.props.baseUrl + "me/media?fields=id,caption&access_token=" + sessionStorage.getItem("access-token");
         let getPostDetails = this.props.baseUrl + "$postId?fields=id,media_type,media_url,username,timestamp&access_token=" + sessionStorage.getItem("access-token");
@@ -78,41 +78,48 @@ class Profile extends Component {
 
     }
 
+    // open edit modal
     editModalHandler = () => {
         this.setState({ editModal: true, editfullname: "" });
     };
 
+    // close edit modal 
     modalCloseHandler = () => {
         this.setState({ editModal: false });
     };
 
+    // submit edit modal
     submitModalHandler = () => {
         this.state.editfullname === "" 
         ? this.setState({ fullnameRequired: "dispBlock" }) 
         : this.setState({ fullName: this.state.editfullname, editModal: false, fullnameRequired: "dispNone" });
     }
 
+    // input handler
     inputFullnameChangeHandler =(e) => {
         this.setState({ editfullname: e.target.value });
     }
 
+    // open post modal 
     postModalOpenHandler = (postId) => { 
         let selectPost = this.state.userPosts.filter((post) => {
             return post.id === postId;
         })[0];
-        console.log(postId, selectPost);
         this.setState({ openPostModal: true, selectedPost: selectPost });
     }
 
+    // close post modal
     postModalCloseHandler = () => {
         this.setState({ openPostModal: false });
     }
 
+    // likes handler
     likeHandler = (details) => {
         details.isLiked = !details.isLiked;
         this.setState({selectedPost: details})
     }
 
+    // comments handler
     commentHandler = (details, pos) => {
         var textField = document.getElementById("textfield-" + pos);
         if (textField.value == null || textField.value.trim() === "") {
@@ -126,6 +133,7 @@ class Profile extends Component {
     }
     
 
+    // renderer function
     render() {
         if (this.state.loggedIn === false) return <Redirect to="/" />
         else

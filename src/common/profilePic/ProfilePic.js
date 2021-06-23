@@ -12,23 +12,28 @@ class ProfilePic extends Component {
         };
     }
 
+    // profile click function
     onProfileIconClick = (e) => {
         this.setState({menuState: !this.state.menuState,anchorEl: e.currentTarget });
     };
     
+    // menu close function
     onMenuClose = () => {
         this.setState({ menuState: !this.state.menuState, anchorEl: null });
     };
 
+    // logout handler function
     onLogoutHandler = () => {
         sessionStorage.clear();
         this.props.history.push("/");
     };
 
+    // open profile page
     myAccountHandler = () => {
         this.props.history.replace("/profile");
     };
 
+    // renderer function
     render() { 
         return (
             <>

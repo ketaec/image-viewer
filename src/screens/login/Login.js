@@ -23,14 +23,17 @@ class Login extends Component {
         }
     }
 
+    // username input handler
     inputUsernameChangeHandler = (e) => {
         this.setState({ username: e.target.value });
     }
 
+    // password input handler
     inputLoginPasswordChangeHandler = (e) => {
         this.setState({ loginPassword: e.target.value });
     }
 
+    //login click handler
     loginClickHandler = () => {
         let username = "upgrad";
         let password = "upgrad";
@@ -51,6 +54,7 @@ class Login extends Component {
         
     }
 
+    // renderer function
     render() {
         return (
             <div>
