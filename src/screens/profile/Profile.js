@@ -1,13 +1,19 @@
 import React, {Component} from 'react';
+import { Redirect } from 'react-router-dom';
 import { 
     Grid,
     Typography,
     Avatar,
     Button,
-    Paper,
-    Modal
+    Modal,
+    GridListTile,
+    GridList,
+    Divider,
+    TextField
  } from '@material-ui/core/';
- import EditIcon from "@material-ui/icons/Edit";
+import EditIcon from "@material-ui/icons/Edit";
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
@@ -21,7 +27,7 @@ class Profile extends Component {
         super();
         this.state = {
             userPosts: [],
-            filteredImages: [],
+            // filteredImages: [],
             username: '', 
             loggedIn: sessionStorage.getItem("access-token") == null ? false : true,
             followed_by: 6,
@@ -32,8 +38,44 @@ class Profile extends Component {
             name: "",
             fullnameRequired: "dispNone",
             editfullname: "",
+            openPostModal: false,
+            selectedPost: {},
 
         }
+    }
+
+    async componentDidMount() {
+        let getUserPosts = this.props.baseUrl + "me/media?fields=id,caption&access_token=" + sessionStorage.getItem("access-token");
+        let getPostDetails = this.props.baseUrl + "$postId?fields=id,media_type,media_url,username,timestamp&access_token=" + sessionStorage.getItem("access-token");
+
+        let response = await fetch(getUserPosts);
+        let posts = await response.json();
+        posts = posts.data;
+
+        for (let i = 0; i < posts.length; i++) {
+            response = await fetch(getPostDetails.replace('$postId', posts[i].id));
+            let details = await response.json();
+            posts[i].index = i;
+            posts[i].url = details.media_url;
+            posts[i].username = details.username;
+            posts[i].timestamp = details.timestamp;
+            posts[i].comments = [];
+            posts[i].likes = Math.round(Math.random() * 100); 
+            posts[i].isLiked = false; 
+
+            let captionAndTags = posts[i].caption.split("\n");
+            for(let captionAndTag of captionAndTags) {
+                if(captionAndTag.charAt(0) === "#") {
+                    posts[i].tags = captionAndTag; 
+                } else {
+                    posts[i].caption = captionAndTag;
+                }
+            }
+            this.setState({ username: details.username });
+        }
+        this.setState({ userPosts: posts });
+        this.setState({ mediaCount: posts.length });
+
     }
 
     editModalHandler = () => {
@@ -53,13 +95,44 @@ class Profile extends Component {
     inputFullnameChangeHandler =(e) => {
         this.setState({ editfullname: e.target.value });
     }
+
+    postModalOpenHandler = (postId) => { 
+        let selectPost = this.state.userPosts.filter((post) => {
+            return post.id === postId;
+        })[0];
+        console.log(postId, selectPost);
+        this.setState({ openPostModal: true, selectedPost: selectPost });
+    }
+
+    postModalCloseHandler = () => {
+        this.setState({ openPostModal: false });
+    }
+
+    likeHandler = (details) => {
+        details.isLiked = !details.isLiked;
+        this.setState({selectedPost: details})
+    }
+
+    commentHandler = (details, pos) => {
+        var textField = document.getElementById("textfield-" + pos);
+        if (textField.value == null || textField.value.trim() === "") {
+            return;
+        }
+
+        details.comments = details.comments.concat([textField.value]);
+        textField.value = "";
+
+        this.setState({selectedPost: details})
+    }
     
 
     render() {
-        return (
-            <div>
-                <Header {...this.props} history={this.props.history} showProfilePic="true" />
-                <div className="profile-information">
+        if (this.state.loggedIn === false) return <Redirect to="/" />
+        else
+            return (
+                <div>
+                    <Header {...this.props} history={this.props.history} showProfilePic="true" />
+                    <div className="profile-information">
                         <Grid container spacing={4}>
                             <Grid item>
                                 <Avatar variant="circle" src={profile_pic} className='avatar' />
@@ -67,7 +140,7 @@ class Profile extends Component {
                             <Grid item xs={12} sm container>
                                 <Grid container item xs={12} style={{ alignItems: "center"}}>
                                     <Typography variant="h5">
-                                        EswarchandKeta
+                                        {this.state.username}
                                     </Typography>
                                 </Grid>
                                 <Grid item container xs={4}>
@@ -112,9 +185,80 @@ class Profile extends Component {
                                 </Modal>
                             </Grid>
                         </Grid>
+                    </div>
+                    <div className="profile-grid">
+                        <GridList cellHeight={400} cols={3}>
+                            {this.state.userPosts.map((post) => (
+                                <GridListTile key={"grid" + post.id}
+                                    onClick={() => this.postModalOpenHandler(post.id)}>
+                                    <img src={post.url} alt={this.state.fullName} />
+                                </GridListTile>
+                            ))}
+                        </GridList>
+                        <Modal open={this.state.openPostModal} onClose={this.postModalCloseHandler} >
+                            <div className="post-modal-div">
+                                <Grid container spacing={4} className="post-modal-grid">
+                                    <Grid item>
+                                        <img src={this.state.selectedPost.url} alt={this.state.fullName} height="400" />
+                                    </Grid>
+                                    <Grid item sm>
+                                        <div className="post-header">
+                                            <div className="post-avatar"> 
+                                                <Avatar variant="circle" src={profile_pic} />
+                                            </div>
+                                            <div className="post-user">{this.state.selectedPost.username}</div>
+                                        </div>
+
+                                        <Grid item xs={12} cellHeight={10}>
+                                            <Divider variant="middle" style={{height:1, margin:0}} />
+                                        </Grid>
+                                        <Grid item xs={12} cellHeight={50} style={{marginTop:10}}>
+                                            <Typography variant="body2">
+                                                {this.state.selectedPost.caption}
+                                            </Typography>
+                                            <Typography variant="body2" className="tags">
+                                                {this.state.selectedPost.tags}
+                                            </Typography>
+                                        </Grid>
+                                            <div className='comments-container'>
+                                                {
+                                                    this.state.selectedPost.comments ?
+                                                        this.state.selectedPost.comments.map((comment, index) => (
+                                                            <p key={index}>
+                                                                <b>{this.state.username}</b> : {comment}
+                                                            </p>
+                                                        ))
+                                                        :
+                                                        <p></p>
+                                                }
+                                            </div>
+                                            <div className='likes'>
+                                                    {
+                                                        this.state.selectedPost.isLiked ?
+                                                            <FavoriteIcon fontSize='default' style={{ color: "red" }} onClick={() => this.likeHandler(this.state.selectedPost)} />
+                                                            :
+                                                            <FavoriteBorderIcon fontSize='default' onClick={() => this.likeHandler(this.state.selectedPost)} />
+                                                    }
+                                                    <Typography>
+                                                        <span>&nbsp;{this.state.selectedPost.isLiked ? (this.state.selectedPost.likes+1) + ' likes' : this.state.selectedPost.likes + ' likes'}</span>
+                                                    </Typography>
+                                            </div>
+                                            <div className='post-comment-container'>
+                                                    <FormControl className='post-comment-form-control'>
+                                                        <TextField id={'textfield-' + this.state.selectedPost.index} label="Add a comment" />
+                                                    </FormControl>
+                                                    <FormControl className="add-button">
+                                                        <Button variant='contained' color='primary' onClick={() => this.commentHandler(this.state.selectedPost, this.state.selectedPost.index)}>ADD</Button>
+                                                    </FormControl>
+                                            </div>
+                                    </Grid>
+                                </Grid>
+                            </div>
+
+                        </Modal>
+                    </div>
                 </div>
-            </div>
-        )
+            )
     }
 }
 
