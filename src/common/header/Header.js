@@ -5,9 +5,6 @@ import './Header.css';
 import ProfilePic from "../profilePic/ProfilePic";
 
 class Header extends Component {
-    constructor() {
-        super();
-    }
 
     onSearch = async (e) => {
         this.props.handleChange(e);
@@ -27,7 +24,7 @@ class Header extends Component {
                                 placeholder="Search..."
                                 disableUnderline
                                 startAdornment={
-                                <InputAdornment position="start">
+                                <InputAdornment position="start" style={{marginLeft:8}}>
                                     <SearchIcon />
                                 </InputAdornment>
                                 }

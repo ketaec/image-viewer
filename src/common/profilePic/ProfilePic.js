@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./ProfilePic.css";
-import { Avatar, IconButton,  Menu,  MenuItem,  Typography} from "@material-ui/core";
+import { Avatar, IconButton,  Menu,  MenuItem,  Typography, Divider} from "@material-ui/core";
 import profile_pic from "../../assets/images/profile_pic.png";
 
 class ProfilePic extends Component {
@@ -50,7 +50,7 @@ class ProfilePic extends Component {
                         <MenuItem onClick={this.myAccountHandler}>
                             <Typography>My Account</Typography>
                         </MenuItem>
-                        <hr />
+                        <Divider variant="middle" />
                         <MenuItem onClick={this.onLogoutHandler}>
                             <Typography>Logout</Typography>
                         </MenuItem>

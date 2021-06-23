@@ -135,7 +135,7 @@ class Profile extends Component {
                     <div className="profile-information">
                         <Grid container spacing={4}>
                             <Grid item>
-                                <Avatar variant="circle" src={profile_pic} className='avatar' />
+                                <Avatar variant="circle" src={profile_pic} className='profile-avatar' />
                             </Grid>
                             <Grid item xs={12} sm container>
                                 <Grid container item xs={12} style={{ alignItems: "center"}}>
@@ -209,10 +209,10 @@ class Profile extends Component {
                                             <div className="post-user">{this.state.selectedPost.username}</div>
                                         </div>
 
-                                        <Grid item xs={12} cellHeight={10}>
+                                        <Grid item xs={12}>
                                             <Divider variant="middle" style={{height:1, margin:0}} />
                                         </Grid>
-                                        <Grid item xs={12} cellHeight={50} style={{marginTop:10}}>
+                                        <Grid item xs={12} style={{marginTop:10}}>
                                             <Typography variant="body2">
                                                 {this.state.selectedPost.caption}
                                             </Typography>
