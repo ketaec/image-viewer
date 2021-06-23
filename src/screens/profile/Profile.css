@@ -37,3 +37,57 @@
 .form-control {
     width:100%;
 }
+
+.profile-grid {
+    margin: 0 10%;
+    cursor: pointer;
+}
+
+.post-modal-div {
+    margin: 10% 20%;
+}
+
+.post-modal-grid {
+    background: white;
+    border-radius: 3px;
+}
+
+.tags {
+    color: rgb(3 121 239);
+}
+
+.likes {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 5px;
+}
+
+.post-comment-container {
+    display: flex;
+}
+
+.post-comment-form-control {
+    width: 80%;
+}
+
+.add-button {
+    cursor: pointer;
+    margin-top: 10px !important;
+    margin-left: 10px !important;
+}
+
+.post-header {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.post-user {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.comments-container {
+    min-height: 260px;
+}
