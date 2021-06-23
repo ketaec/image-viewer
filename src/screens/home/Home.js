@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Redirect } from 'react-router-dom';
 import {
     Avatar,
     Button,
@@ -107,70 +108,72 @@ class Home extends Component {
     };
 
     render() {
-        return (
-            <div>
-                <Header {...this.props} history={this.props.history} showSearchbar="true" handleChange={this.handleChange} />
-                <Container className='posts-container'>
-                    <Grid container alignContent='center' justify='flex-start' direction='row' spacing={2}>
-                        {
-                            (this.state.filteredImages || []).map((details, index) => (
-                                <Grid item xs={6} key={details.id+"_img"}>
-                                    <Card key={details.id}>
+        if (sessionStorage.getItem("access-token") == null) return <Redirect to="/" />
+        else
+            return (
+                <div>
+                    <Header {...this.props} history={this.props.history} showSearchbar="true" handleChange={this.handleChange} />
+                    <Container className='posts-container'>
+                        <Grid container alignContent='center' justify='flex-start' direction='row' spacing={2}>
+                            {
+                                (this.state.filteredImages || []).map((details, index) => (
+                                    <Grid item xs={6} key={details.id+"_img"}>
+                                        <Card key={details.id}>
 
-                                        <CardHeader
-                                            avatar={<Avatar variant="circle" src={profile_pic} className='avatar' />}
-                                            title={details.username}
-                                            subheader={new Date(details.timestamp).toLocaleString().replace(",","")} />
+                                            <CardHeader
+                                                avatar={<Avatar variant="circle" src={profile_pic} className='avatar' />}
+                                                title={details.username}
+                                                subheader={new Date(details.timestamp).toLocaleString().replace(",","")} />
 
-                                        
-                                        <CardMedia style={{ height: 0, paddingTop: '80%', marginBottom: 10 }} image={details.url} />
-                                        <Divider variant="middle" />
-                                        <CardContent>
-                                            <div className='caption'>{details.caption}</div>
-                                            <div className='tags'> {details.tags} </div>
-                                            <br />
-                                            <div className='likes'>
-                                                {
-                                                    details.isLiked ?
-                                                        <FavoriteIcon fontSize='default' style={{ color: "red" }} onClick={() => this.likeHandler(details)} />
-                                                        :
-                                                        <FavoriteBorderIcon fontSize='default' onClick={() => this.likeHandler(details)} />
-                                                }
-                                                <Typography>
-                                                    <span>&nbsp;{details.isLiked ? (details.likes+1) + ' likes' : details.likes + ' likes'}</span>
-                                                </Typography>
-                                            </div>
+                                            
+                                            <CardMedia style={{ height: 0, paddingTop: '80%', marginBottom: 10 }} image={details.url} />
+                                            <Divider variant="middle" />
+                                            <CardContent>
+                                                <div className='caption'>{details.caption}</div>
+                                                <div className='tags'> {details.tags} </div>
+                                                <br />
+                                                <div className='likes'>
+                                                    {
+                                                        details.isLiked ?
+                                                            <FavoriteIcon fontSize='default' style={{ color: "red" }} onClick={() => this.likeHandler(details)} />
+                                                            :
+                                                            <FavoriteBorderIcon fontSize='default' onClick={() => this.likeHandler(details)} />
+                                                    }
+                                                    <Typography>
+                                                        <span>&nbsp;{details.isLiked ? (details.likes+1) + ' likes' : details.likes + ' likes'}</span>
+                                                    </Typography>
+                                                </div>
 
-                                            <div id='comments-container'>
-                                                {
-                                                    details.comments ?
-                                                        details.comments.map((comment, index) => (
-                                                            <p key={index}>
-                                                                <b>{this.state.username}</b> : {comment}
-                                                            </p>
-                                                        ))
-                                                        :
-                                                        <p></p>
-                                                }
-                                            </div>
+                                                <div id='comments-container'>
+                                                    {
+                                                        details.comments ?
+                                                            details.comments.map((comment, index) => (
+                                                                <p key={index}>
+                                                                    <b>{this.state.username}</b> : {comment}
+                                                                </p>
+                                                            ))
+                                                            :
+                                                            <p></p>
+                                                    }
+                                                </div>
 
-                                            <div className='post-comment-container'>
-                                                <FormControl className='post-comment-form-control'>
-                                                    <TextField id={'textfield-' + index} label="Add a comment" />
-                                                </FormControl>
-                                                <FormControl className="add-button">
-                                                    <Button variant='contained' color='primary' onClick={() => this.commentHandler(details, index)}>ADD</Button>
-                                                </FormControl>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
-                            ))
-                        }
-                    </Grid>
-                </Container>
-            </div>
-        )
+                                                <div className='post-comment-container'>
+                                                    <FormControl className='post-comment-form-control'>
+                                                        <TextField id={'textfield-' + index} label="Add a comment" />
+                                                    </FormControl>
+                                                    <FormControl className="add-button">
+                                                        <Button variant='contained' color='primary' onClick={() => this.commentHandler(details, index)}>ADD</Button>
+                                                    </FormControl>
+                                                </div>
+                                            </CardContent>
+                                        </Card>
+                                    </Grid>
+                                ))
+                            }
+                        </Grid>
+                    </Container>
+                </div>
+            )
     }
 }
 
